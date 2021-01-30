@@ -3,7 +3,7 @@ title: "Electricity Consumption and Natural Gas Consumption Increase the Greenho
 author: "Jia Jia Ji"
 thanks: "Code and data are available at: https://github.com/jiaj6/greenhouse-gas-emissions-paper."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "Focusing on analyzing the effects of municipal sites’ attributes in the City of Toronto on greenhouse gas emissions, I made some plots and tables to visualize the relationships, and then I applied the multiple linear regression model to explore whether these effects were significant or not. Finally, I found that as more amount of electricity and natural gas consumed, greenhouse gas emissions would increase. Also, the sites belonging to some specific operation types tended to have higher or lower greenhouse gas emissions than other sites. These findings were beneficial for people to take targeted measures to reduce the emissions and protect the environment more effectively."
+abstract: "To analyze the effects of electricity and natural gas consumption on greenhouse gas emissions, I used the dataset containing the information about the attributes of municipal sites in the City of Toronto. I created some plots and tables to visualize the relationships between variables, and then I applied the multiple linear regression model to explore whether these effects were significant or not. Finally, I found that as more amount of electricity and natural gas consumed, greenhouse gas emissions would increase; also, the sites that were classified as some specific operation types tended to have much higher or much lower greenhouse gas emissions than others. These findings were beneficial for people to take more targeted measures to reduce the emissions and protect the environment effectively."   
 output: 
    bookdown::pdf_document2:
 toc: FALSE
@@ -17,7 +17,6 @@ bibliography: references.bib
 # Author: Jia Jia Ji
 # Email: jiajia.ji@mail.utoronto.ca
 # Date: Jan.24, 2021
-# Issues:
 # To do: get the data, clean the data, do exploratory analysis and apply linear regression models to data
 ```
 
@@ -40,38 +39,33 @@ citation('opendatatoronto')
 ```
 
 
-
-
 # Introduction
 
-Accompanying with the rapid advances in industrial and technological development, the environmental issues like resource scarcity, global warming and biodiversity destruction have raised people’s attention. The large increase in greenhouse gas emissions is among these problems. The emitted greenhouse gas mainly come from the energy resources consumption for electricity, transportation, industrial production and etc. Having more and more greenhouse gas emitted can cause global warming, glacial melting and ecological destruction, which are detrimental to the global environment. Fortunately, more countries and people have realized this problem and are jointly committed to saving energy and reducing emissions. Therefore, understanding which factors are correlated with greenhouse gas emissions is crucial for both policymakers and residents. Specifically, policymakers can make more targeted policies to restrict the activities related to greenhouse gas emissions, meanwhile, residents can take effective actions in daily life to reduce the emissions and protect the environment. 
+Accompanying with the rapid advances in industrial and technological development, the environmental issues such as the resource scarcity, global warming and biodiversity destruction have raised people’s attention. The large increase in greenhouse gas emissions is among these problems. The emitted greenhouse gas mainly come from the energy resources consumption used for electricity, transportation, industrial production and etc. Having more and more greenhouse gas emitted can cause the global warming, glacial melting and ecological destruction, which are detrimental to the global environment. Fortunately, many countries and people have realized this problem and are jointly committed to saving energy and reducing emissions. Therefore, understanding which factors are correlated with greenhouse gas emissions is crucial for both policymakers and residents. Specifically, policymakers can make more targeted policies to restrict the activities related to the greenhouse gas emissions, meanwhile, residents can take effective actions in daily life to reduce the emissions and protect the environment better. 
 
-This report aimed to explore whether the electricity consumption and natural gas consumption had significant effect on greenhouse gas emissions. The data was from Open Data Toronto [@citeopendatatoronto]. The response variable was the annual greenhouse gas emissions for each municipal site in City of Toronto, and the explanatory variables were the annual consumed amounts of electricity and natural gas. Also, I treated each site’s total floor area and average weekly operating hours as the confounding variables because the sites that had larger sizes and longer operating hours tended to consume more energy and have more greenhouse gas emitted. Moreover, the data contained 2 other relevant variables: operation type and city classification for each site, which were also considered as covariates. Accordingly, I investigated a secondary research question: whether these factors also significantly affected greenhouse gas emissions. By answering these questions, people can understand which factors were strongly correlated with greenhouse gas emissions and take actions to reduce the emissions from these factors’ perspectives. 
+This report aimed to explore whether the electricity consumption and natural gas consumption had significant effect on greenhouse gas emissions. The data was from Open Data Toronto [@citeopendatatoronto]. The response variable was the annual greenhouse gas emissions for each municipal site in the City of Toronto, and the explanatory variables were the annual consumed amount of electricity and natural gas. Also, I treated each site’s total floor area and average weekly operating hours as the confounding variables because the sites that had larger sizes and longer operating hours tended to consume more energy and have more greenhouse gas emitted. Moreover, the data contained 2 other relevant variables: operation type and city classification for each site, which were also considered as covariates. Accordingly, I investigated a secondary research question: whether these factors also significantly affected the greenhouse gas emissions. By answering these questions, people can understand which factors were strongly correlated with greenhouse gas emissions, so that they can take actions to reduce the emissions from these factors’ perspectives. 
 
-The remaining report was organized into the following 6 sections. In Data section, I discussed the data source, the biases along with the data, the basic statistical characteristics of relevant variables and the data cleaning process. Also, I talked about the exploratory data analysis by showing some plots and tables to visualize the distributions of some variables and the relationships between them. Then, in Model section, I used 2 multiple linear regression models along with 2 confounding variables (total floor area and average weekly operating hours) to address the primary and secondary research questions respectively. In Model 1, I included the electricity consumption and natural gas consumption as the only 2 covariates to explore whether they had significant effect on greenhouse gas emissions. Besides, in Model 2, I added the operation type and city classification as another covariates to see whether these factors were also correlated with greenhouse gas emissions. In Results section, Model 1 showed that the electricity consumption and natural gas consumption both affected the greenhouse gas emissions significantly, and Model 2 indicated that the site’s operation type also had effect on the emissions. Afterwards, I talked about the main findings in Conclusions section. Finally, I included the graphs relevant to model assumptions in Appendix section.
-
-
+The remaining report was organized into the following 5 sections. In Data section, I discussed the data source, the biases along with the data, the basic statistical characteristics of relevant variables and the data cleaning process. Also, I talked about the exploratory data analysis by showing some plots and tables to visualize the spreads of some variables and the relationships between them. Then, in Model section, I used 2 multiple linear regression models with 2 confounding variables (total floor area and average weekly operating hours) to address the primary and secondary questions respectively. In Model 1, I included the electricity consumption and natural gas consumption as the only 2 explanatory variables to explore whether they had significant effect on greenhouse gas emissions. Besides, in Model 2, I added the operation type and city classification as another covariates to see whether these factors were also correlated with greenhouse gas emissions. In Results section, Model 1 showed that the electricity consumption and natural gas consumption both affected the greenhouse gas emissions significantly, and Model 2 indicated that the site’s operation type also affected the emissions. Afterwards, I talked about the main findings in Conclusions section. Finally, I included the graphs relevant to model assumptions in Appendix section.
 
 
 # Data
 
-**2.1 Data Overview: Source of Data, Data Collection Methods, Biases along with Data, and Statistical Attributes of Variables**
+**2.1 Data Overview: Source of Data, Data Collection Methods, Biases along with Data, and Statistical Characteristics of Variables**
 
-I used `R` [@Rcitation], the `tidyverse` package [@citetidyverse], the `ggplot2` package [@citeggplot2] and the `emmeans` package [@citeemmeans] to analyze the data. This report about annual energy consumption and greenhouse gas emissions prepared by Environment & Energy Division [@citeliterature] provided information about how the data was collected.
+I used `R` [@Rcitation], the `tidyverse` package [@citetidyverse], the `ggplot2` package [@citeggplot2] and the `emmeans` package [@citeemmeans] to analyze the data. The report about the annual energy consumption and greenhouse gas emissions prepared by the Environment & Energy Division [@citeliterature] provided information about how the data was collected.
 
-The dataset was about the annual energy consumption and greenhouse gas (GHG) emissions for the municipal sites in City of Toronto in 2018. All sites in City of Toronto reported the data on the specified variables to the Environment & Energy Division, then the division collected the data and stored it in the energy management system. This dataset was published on Open Data Toronto [@citeopendatatoronto] under the Environment topic. 1482 sites in the City of Toronto formed the sample, and the frame was all sites in the City of Toronto because some sites were not required to provide data to the division. The population was all sites in Canada. Since all municipal sites belonging to the City of Toronto were required to report this data to the government, this data collection method was efficient. Also, it provided low-response rate and relatively accurate data. However, some data may not be recorded correctly due to the manual processing errors, or some sites with high GHG emissions may report lower value on purpose because the government encouraged the GHG emissions reduction. These situations could lead to the measurement biases. Another important issue was that the values for fuel oils, propane, coal, wood, district heating and cooling consumption were all missing in the dataset, which may limit the results of the analysis. Moreover, in terms of the external validity, since the sample size was not large (i.e. only 1482 records), these inferences may be inappropriate to generalize to other areas in Canada due to the social or cultural differences among cities.
+This dataset was about the annual energy consumption and greenhouse gas (GHG) emissions for the municipal sites in the City of Toronto in 2018. All the sites in City of Toronto reported the data on the specified variables to the Environment & Energy Division, then the division collected the data and stored it in the energy management system. This dataset was published on Open Data Toronto [@citeopendatatoronto] under the Environment topic. 1482 sites in the City of Toronto formed the sample, and the frame was all sites in the City of Toronto because some sites were not required to provide data to the division. The population was all municipal sites in Canada. Since the sites managed by the City of Toronto were all required to report this data to the government, this data collection method was efficient. Also, it provided low-response rate and relatively accurate data. However, some data may not be recorded correctly due to the manual processing errors, or some sites with high GHG emissions may report lower values on purpose because the government encouraged the GHG emissions reduction. These situations could lead to the measurement biases. Another important issue was that the values for fuel oils, propane, coal, wood, district heating and cooling consumption were all missing in the dataset, which may limit the results of the analysis. Moreover, in terms of the external validity, since the sample size was not large (i.e. only 1482 records), the inferences may be inappropriate to generalize to other areas in Canada due to the social or cultural differences among cities.
 
-This dataset contained the information about annual GHG emissions for 1482 sites in City of Toronto, along with their basic attributes such as operation type, city classification, address, annual water flow, annual consumption for each type of energy resources and etc. There were 22 variables in total. I dropped 15 irrelevant variables like operation name, address and annual water flow, and I focused on 7 variables that were relevant to the research questions: GHG emissions, operation type, city classification, total floor area, average weekly operating hours, annual electricity consumption and annual natural gas consumption. Specifically, GHG emissions was a discrete variable that was measured in kilograms and ranged ftom 0 to 18193619. Similarly, total floor area was also a discrete variable measured in square feet. The electricity consumption and natural gas consumption were both continuous variables, with electricity consumption ranging from  to  kWh and natural gas consumption ranging from  to  cubic meters. Moreover, operation type and city classification were categorical nominal variables. Operation type had  different levels and city classification had  levels. While the average weekly operating hours was a categorical ordinal variable that had  levels. 
-
-
+This dataset included the data on annual GHG emissions, along with the basic attributes of each site, such as the operation type, city classification, address, annual water flow, annual consumption for each type of energy resources and etc. There were 22 variables in total. I dropped 15 irrelevant variables like operation name, address and annual water flow, and I focused on 7 variables that were relevant to the research questions: GHG emissions, operation type, city classification, total floor area, average weekly operating hours, annual electricity consumption and annual natural gas consumption. Specifically, GHG emissions was a discrete variable that was measured in kilograms and it ranged from 0 to 18193619. Similarly, total floor area was a discrete variable measured in square feet. The electricity consumption and natural gas consumption were both continuous variables, with electricity consumption ranging from 0 to 131780414 kWh and natural gas consumption ranging from 0 to 6940806 cubic meters. Besides, operation type and city classification were both categorical nominal variables. Operation type had 26 different levels and city classification had 11 levels, while the average weekly operating hours was a categorical ordinal variable that had 3 different levels. 
 
 
 **2.2 Data Cleaning**
 
-This dataset contained only few missing values. Row 1463 was an empty record, so I dropped this entire row. Then, in the first row, the values for electricity consumption, natural gas consumption and GHG emissions were all missing. In this case, I replaced these null values with the average of each corresponding variable. The remaining data seemed reasonable and I got the cleaned data.
+This dataset contained only few missing values. Row 1463 was an empty record, so I dropped this entire row. Then, in the first row, the values for electricity consumption, natural gas consumption and GHG emissions were all missing, so I dropped these null values as well. Also, the values for city classification were 0 for row 386, 393 and 395, which were inappropriate (i.e. incorrect variable type). In this case, I dropped these values. Then, the remaining data seemed appropriate and I got the clean data.
+
 
 ```{r get data and clean the data, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE}
-# get the data from Open Data Toronto: 
+# get the data from Open Data Toronto
 energy_GHG <- opendatatoronto::search_packages('Annual Energy Consumption') %>%
   opendatatoronto::list_package_resources() %>%
   filter(name == 'annual-energy-consumption-data-2018') %>% 
@@ -80,9 +74,9 @@ energy_GHG <- opendatatoronto::search_packages('Annual Energy Consumption') %>%
   opendatatoronto::get_resource()
 
 # write the raw data in a csv file and put it in the input folder
-#write_csv(energy_GHG, "Inputs/raw_data.csv")
+#write_csv(energy_GHG, "Inputs/raw_data.xlsx")
 
-# since this csv file has several heading and subheading lines, 
+# since this file has several heading and subheading lines, 
 # we simply skip these lines, select those columns/variables relevant to our research question and read these data in
 # the selected columns: Operation_Type, City, Total_Floor_Area, Avg_hrs/wk, Electricity, Natural_Gas, GHG_Emissions
 # also convert the numerical variables from factors to integers/numerical values 
@@ -190,9 +184,9 @@ summary_table %>%
                 align = c('l', 'l', 'l', 'l', 'l', 'l')) 
 ```
 
-Then, I considered the electricity consumption as an independent variable. It had an average of 1019225.22 and an inter-quantile range of 378356.14. I graphed a scatter plot of electricity consumption versus GHG emissions and added a best fit line to visually show their relationship. The pattern in Figure \@ref(fig:plot3) showed that the sites with more amount of electricity consumed tended to have higher GHG emissions. Similarly, the natural gas consumption had an average of 36228.42, and as in Figure \@ref(fig:plot4), the scatter plot of natural gas consumption versus GHG emissions illustrated that the sites with more natural gas consumption tended to have higher emissions. Moreover, the best fit line in these 2 scatter plots were both straight line, which further indicated that electricity and natural gas consumptions were possible to be linearly correlated with GHG emissions.
+Then, I considered the electricity consumption as an independent variable. It had an average of 1019225.22 and an inter-quantile range (IQR = Q3 - Q1) of 378356.14. I graphed a scatter plot of electricity consumption versus GHG emissions and added a best fit line to visually show their relationship. The pattern in Figure \@ref(fig:plot3) showed that the sites with more amount of electricity consumed tended to have higher GHG emissions generally. Similarly, the natural gas consumption had an average of 36228.42, and as in Figure \@ref(fig:plot4), the scatter plot of natural gas consumption versus GHG emissions illustrated that the sites with more natural gas consumption tended to have higher emissions. Moreover, the linear best fit line in these 2 scatter plots were seemed appropriate, which further indicated that electricity and natural gas consumptions were possible to be linearly correlated with GHG emissions.
 
-```{r plot3, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = 'The scatter plot of electricity consumption versus GHG emissions of sites in the City of Toronto in 2018', fig.width=5, fig.height=5}
+```{r plot3, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = 'The scatter plot of electricity consumption versus GHG emissions of sites in the City of Toronto in 2018', fig.width=4, fig.height=4}
 # scatter plot of electricity consumption (independent variable) vs GHG_emissions (dependent variable)
 clean_energy_GHG_df %>%
   ggplot(mapping = aes(x = electricity, y = GHG_emissions)) + 
@@ -205,7 +199,7 @@ clean_energy_GHG_df %>%
 ```
 
 
-```{r plot4, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = 'The scatter plot of natural gas consumption versus GHG emissions of sites in the City of Toronto in 2018', fig.width=5, fig.height=5}
+```{r plot4, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = 'The scatter plot of natural gas consumption versus GHG emissions of sites in the City of Toronto in 2018', fig.width=4, fig.height=4}
 # scatter plot of natural gas consumption (independent variable) vs GHG_emissions (dependent variable)
 clean_energy_GHG_df %>%
   ggplot(mapping = aes(x = natural_gas, y = GHG_emissions)) + 
@@ -218,7 +212,7 @@ clean_energy_GHG_df %>%
 ```
 
 
-Then, for the variable operation type, I plotted a bar chart of the average GHG emissions for its each level. As shown in Figure \@ref(fig:plot1), fire stations and associated offices and facilities, long-term care and community centres were the 3 sites that had the highest average GHG emissions in 2018; meanwhile, facilities related to the treatment of water, facilities related to the treatment of sewage and ambulance stations and associated offices and facilities were the sites that had the lowest average annual GHG emissions. Similarly, for the city classification, I graphed another bar chart of the average GHG emissions for its each group in Figure \@ref(fig:plot2). This graph illustrated that Pickering, Mississauga, Etobicoke and Scarborough were among the sites with the highest average GHG emissions; Markham and Tornhill were the sites that had the lowest average emissions. These 2 bar charts showed that sites with different operation types and city classifications tended to have different GHG emissions, which further revealed that operation type and city classification were possible to affect GHG emissions.
+Then, for the variable operation type, I plotted a bar chart of the average GHG emissions for each of its level. As shown in Figure \@ref(fig:plot1), facilities related to the treatment of sewage, facilities related to the treatment of water and long-term care were the 3 sites that had the highest average GHG emissions in 2018; meanwhile, Parking garages, facilities related to the pumping of sewage and fire stations and associated offices and facilities were the sites that had the lowest average annual GHG emissions. Similarly, for the city classification, I graphed another bar chart of the average GHG emissions for each of its group in Figure \@ref(fig:plot2). This graph illustrated that Markham, Scarborough and Etobicoke were the 3 sites with the highest average GHG emissions; Mississauga, Tornhill and Pickering were the sites that had the lowest average emissions. These 2 bar charts showed that sites with different operation types and city classifications tended to have different GHG emissions, which further revealed that operation type and city classification were possible to affect GHG emissions.
 
 ```{r plot1,  fig.cap='The bar chart of average GHG emissions for each operation type of sites in the City of Toronto in 2018', fig.width=8, fig.height=5, echo = FALSE, message = FALSE, warning = FALSE}
 # bar chart of operation_type (independent variable) vs GHG_emissions (dependent variable)
@@ -258,12 +252,11 @@ emissions_city %>%
 
 **3.1 Model 1: The Multiple Linear Regression Model with Effects of Electricity Consumption and Natural Gas Consumption**
 
-To address the primary question, I used a multiple linear regression model including electricity consumption and natural gas consumption as the explanatory variables because even though GHG emissions was a discrete variable, it was not the counts. Also, the linear model was appropriate here. Meanwhile, since the sites with more floor area and longer average weekly operating hours tended to have higher GHG emissions generally, I considered the total floor area and average weekly operating hours as the confounding variables. And I included them as the covariates in the regression model to adjust for these differences. Then, I fitted this model and checked the p-values to see whether electricity consumption and natural gas consumption had significant effect on GHG emissions or not. Moreover, I checked the assumptions of normality and constant variance for errors.  
+  To address the primary question, I used a multiple linear regression model including electricity consumption and natural gas consumption as the explanatory variables, because even though GHG emissions was a discrete variable, it was not the count. Also, the linear model was appropriate here. Meanwhile, since the sites with more floor area and longer average weekly operating hours tended to have higher GHG emissions generally, I considered the total floor area and average weekly operating hours as the confounding variables. And I included them as the covariates in the regression model to adjust for these differences. Then, I fitted this model and checked the p-values to see whether electricity consumption and natural gas consumption had significant effect on GHG emissions or not. Also, I checked the assumptions of normality and constant variance for errors.  
   
 **3.2 Model 2: The Linear Regression Model with Effects of Other Relevant Factors**
 
-Then, motivated by the exploratory analysis findings that some sites with specific operation types and city classifications tended to have higher or lower GHG emissions, I included the operation type and city classification as another 2 covariates into the fitted Model 1. I fitted the model and checked the p-values to see whether the effects of these factors on GHG emissions were significant or not.
-
+Then, motivated by the exploratory analysis findings (i.e. some sites with specific operation types and city classifications tended to have higher or lower GHG emissions), I included the operation type and city classification as another 2 covariates into the fitted Model 1. I fitted this model and checked the p-values to see whether the effects of these factors on the GHG emissions were significant or not.
 
 
 
@@ -271,9 +264,9 @@ Then, motivated by the exploratory analysis findings that some sites with specif
 
 **4.1 Model 1: The Multiple Linear Regression Model with Effects of Electricity Consumption and Natural Gas Consumption**
 
-For the fitted linear regression model, as in Table \@ref(tab:model1), the p-values for electricity consumption and natural gas consumption were very small (<2e-16), which showed that they affected GHG emissions significantly. Also, the estimate for electricity consumption was 0.043, which revealed that GHG emissions would increase by 0.043 kg as one more unit electricity consumed. Similarly, the estimate for natural gas consumption was 1.867, which indicated that GHG emissions would be increase by 1.867 kg as one more unit natural gas consumed. 
+For the fitted linear regression model, the p-values (Table \@ref(tab:model1)) for electricity consumption and natural gas consumption were very small (<2e-16), which showed that they affected GHG emissions significantly. Also, the estimate for electricity consumption was 0.043, which revealed that GHG emissions would increase by 0.043 kg as one more unit electricity consumed. Similarly, the estimate for natural gas consumption was 1.867, which indicated that GHG emissions would be increase by 1.867 kg as one more unit natural gas consumed. 
 
-Furthermore, I checked that the errors were normal distributed and had constant variance because most points were near QQ line in the QQ plot and there was no apparent pattern in the plot of index versus errors. 
+Furthermore, I checked that the errors were normal distributed and had constant variance, because most points were near the QQ line in QQ plot and there was no apparent pattern in the scatter plot errors. 
 
 ```{r model1, echo = FALSE, message = FALSE, warning = FALSE}
 ### models ###
@@ -281,20 +274,20 @@ Furthermore, I checked that the errors were normal distributed and had constant 
 # Model 1: the multiple linear regression model including electricity and natural gas consumption as explanatory variables
 # and total floor area and average weekly operating hours as the confounding variables
 model_1 <- lm(GHG_emissions ~ electricity + natural_gas + total_floor_area + avg_weekly_hrs, data = clean_energy_GHG_df)
-knitr::kable(summary(model_1)$coef, caption = 'The table of the estimates for fitted Model 1') 
+knitr::kable(summary(model_1)$coef, caption = 'The table of estimates for fitted Model 1') 
 # shows the results: estimates, p-values
 ```
 
 
 **4.2 Model 2: The Linear Regression Model with Effects of Other Relevant Factors**
 
-In the fitted model that included other relevant explanatory variables, the p-value for operation type was small (1.096e-07), as shown in Table \@ref(tab:model2). This indicated that the site’s operation type significantly affected GHG emissions. Besides, Table \@ref(tab:model22) was the summary of estimated marginal means for each operation type. The site with facilities related to the treatment of water had an estimated marginal mean of -46632 (i.e. the lowest value), which showed that the sites with this operation type tended to have the lowest GHG emissions; while the estimated marginal mean for the performing arts facilities was 313303 (i.e. the highest value), which showed that the sites with this operation type tended to have higher GHG emissions. Moreover, the p-value for city classification was relatively large (0.96141), which revealed that the city that site was located was not correlated with GHG emissions. 
+In the fitted model that included other relevant explanatory variables, the p-value (Table \@ref(tab:model2)) for operation type was small (0.000). This indicated that the site’s operation type significantly affected GHG emissions. Besides, Table \@ref(tab:model22) was the summary of estimated marginal means for each operation type. The site with facilities related to the treatment of water had an estimated marginal mean of -41807.21 (i.e. the lowest value), which showed that the sites with this operation type tended to have the lowest GHG emissions; while the estimated marginal mean for the performing arts facilities was 313303 (i.e. the highest value), which showed that the sites with this operation type tended to have higher GHG emissions. Moreover, the p-value for city classification was relatively large (0.933), which revealed that the city that site was located was not correlated with GHG emissions. 
 
 ```{r model2, echo = FALSE, message = FALSE, warning = FALSE}
 # Model 2: the linear regression model with effects of operation type and city 
 model_2 <- lm(GHG_emissions ~ electricity + natural_gas + operation_type + city_class + total_floor_area + avg_weekly_hrs,
               data = clean_energy_GHG_df)
-knitr::kable(anova(model_2), digits = 3) # anova table
+knitr::kable(anova(model_2), digits = 3, caption = 'The table of estimates for each operation type') # anova table
 ```
 
 
@@ -306,9 +299,11 @@ knitr::kable(summary(emmeans(model_2, ~operation_type))[c(1,2)], caption = 'The 
 
 # Conclusions
 
-Electricity consumption and natural gas consumption had significant effect on GHG emissions, specifically, the sites consuming more amount of electricity or natural gas tended to have higher emissions. Besides, GHG emissions also depended on some other attributes of sites. For example, the sites with some specific operation types tended to have higher or lower emissions than other sites.    
+Electricity consumption and natural gas consumption had significant effect on GHG emissions, specifically, the sites consuming more amount of electricity or natural gas tended to have higher emissions. Besides, GHG emissions also depended on some other attributes of sites. For example, the sites with some specific operation types tended to have much higher or much lower emissions than others.    
 
 \newpage
+
+
 # Appendix {-}
 
 **6.1 Model 1: The Multiple Linear Regression Model with Effects of Electricity Consumption and Natural Gas Consumption**
@@ -329,5 +324,7 @@ qqline(errors)
 
 
 \newpage
+
+
 # References
 
